@@ -20,7 +20,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                 FontAwesomeIcons.times,
                 color: Colors.white,
               ),
-              onPressed: null)
+              onPressed: () => Navigator.pop(context))
         ],
         title: Text('Profile Details'),
       ),
