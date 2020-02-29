@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/webrtc.dart';
 import 'package:rant/experimental/signal.dart';
+import 'package:rant/screens/profile.dart';
 
 class CallSample extends StatefulWidget {
   //String serverUrl = 'demo.cloudwebrtc.com';
@@ -14,6 +15,7 @@ class _CallSampleState extends State<CallSample> {
   String _selfId;
   RTCVideoRenderer _localRenderer = RTCVideoRenderer();
   RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   _CallSampleState({Key key, @required this.serverUrl});
 
@@ -118,7 +120,18 @@ class _CallSampleState extends State<CallSample> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Ranter Call')),
+        key: _scaffoldKey,
+        drawer: drawer(),
+        appBar: AppBar(
+          title: Text('Ranter Call'),
+          leading: IconButton(
+              icon: Icon(
+                Icons.menu,
+                color: Colors.white,
+                size: 30,
+              ),
+              onPressed: () => _scaffoldKey.currentState.openDrawer()),
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: _inCalling
             ? SizedBox(
@@ -169,5 +182,19 @@ class _CallSampleState extends State<CallSample> {
                 itemCount: _peers?.length ?? 0,
                 itemBuilder: (context, i) => _buildPeer(context, _peers[i]),
               ));
+  }
+
+  Widget drawer() {
+    return Drawer(
+      child: ListView(
+        children: <Widget>[
+          ListTile(
+            onTap: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => UserProfile())),
+            title: Text('Profile'),
+          ),
+        ],
+      ),
+    );
   }
 }
